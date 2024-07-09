@@ -20,7 +20,7 @@ SELECT
     emp.razao_social AS nome_empresa,
     cli.razao_social AS nome_cliente,
     p.situacao,
-	p.id_pedido
+    p.id_pedido
 FROM public.PEDIDO p
 JOIN public.EMPRESA emp ON p.id_empresa = emp.id_empresa
 JOIN public.CLIENTES cli ON p.id_cliente = cli.id_cliente
@@ -70,15 +70,15 @@ SELECT
     p.descricao,
     cli.id_cliente,
     cli.razao_social AS razao_social_cliente,
-	e.id_empresa,
-	e.razao_social AS razao_social_empresa, 
-	v.id_vendedor, 
-	v.nome,
+    e.id_empresa,
+    e.razao_social AS razao_social_empresa, 
+    v.id_vendedor, 
+    v.nome,
     cpp.preco_minimo,
     cpp.preco_maximo,
-	LEAST(
+    LEAST(
         GREATEST(
-			COALESCE(
+	    COALESCE(
                 (SELECT preco_praticado
                  FROM latest_prices lp
                  WHERE lp.id_produto = p.id_produto
@@ -88,21 +88,21 @@ SELECT
             ), 
             cpp.preco_minimo
         ), 
-        cpp.preco_maximo
+    cpp.preco_maximo
     ) AS preco_base
 FROM 
     public.PRODUTOS p
 JOIN 
     public.CONFIG_PRECO_PRODUTO cpp ON p.id_produto = cpp.id_produto
 JOIN 
-	public.ITENS_PEDIDO ip ON p.id_produto = ip.id_produto
+    public.ITENS_PEDIDO ip ON p.id_produto = ip.id_produto
 JOIN
-	public.PEDIDO ped ON ip.id_pedido = ped.id_pedido
+    public.PEDIDO ped ON ip.id_pedido = ped.id_pedido
 JOIN 
     public.CLIENTES cli ON ped.id_cliente = cli.id_cliente
 JOIN
-	public.VENDEDORES v ON cli.id_vendedor = v.id_vendedor
+    public.VENDEDORES v ON cli.id_vendedor = v.id_vendedor
 JOIN
-	public.EMPRESA e ON cli.id_empresa = e.id_empresa
+    public.EMPRESA e ON cli.id_empresa = e.id_empresa
 GROUP BY 
     p.id_produto, cli.id_cliente, cpp.preco_minimo, cpp.preco_maximo, e.id_empresa, e.razao_social, v.id_vendedor, v.nome
