@@ -14,6 +14,8 @@
         - `CLIENTES (id_cliente, razao_social, data_cadastro, id_vendedor, id_empresa, inativo)`
         - `PEDIDO (id_pedido, id_empresa, id_cliente, valor_total, data_emissao, situacao)`
         - `ITENS_PEDIDO (id_item_pedido, id_pedido, id_produto, preco_praticado, quantidade)`
+          
+![Diagrama](https://github.com/kimcen/Teste-de-SQL-Versotech/assets/52336601/64b1e70c-9ac7-4b95-a1ae-1390eb2740d0)
 
 3. **Tarefas:**
     - a. **Consultas Básicas:**
