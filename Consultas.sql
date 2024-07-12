@@ -65,6 +65,17 @@ GROUP BY v.nome;
 -- Consulta de Junção
 --"preco_base" possui o último valor que um cliente pagou por um produto, limitado pelas regras da configuração do produto.
 -- A clausula "coalesce" garante que, caso não seja encontrado um valor final, o valor comparado nas regras de configuração será o preco mínimo
+WITH latest_prices AS (
+    SELECT 
+        ip.id_produto,
+        ped.id_cliente,
+        ip.preco_praticado,
+        ROW_NUMBER() OVER (PARTITION BY ip.id_produto, ped.id_cliente ORDER BY ped.data_emissao DESC) AS rn
+    FROM 
+        public.itens_pedido ip
+    JOIN 
+        public.pedido ped ON ip.id_pedido = ped.id_pedido
+)
 SELECT 
     p.id_produto,
     p.descricao,
@@ -82,7 +93,7 @@ SELECT
                 (SELECT preco_praticado
                  FROM latest_prices lp
                  WHERE lp.id_produto = p.id_produto
-                   AND lp.id_cliente = c.id_cliente
+                   AND lp.id_cliente = cli.id_cliente
                    AND lp.rn = 1),
                 cpp.preco_minimo
             ), 
